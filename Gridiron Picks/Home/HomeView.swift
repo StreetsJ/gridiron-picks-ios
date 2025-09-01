@@ -19,9 +19,9 @@ struct HomeView: View {
                 } else {
                     List(dataManager.games) { game in
                         VStack(alignment: .leading) {
-                            Text("\(game.awayTeam) @ \(game.homeTeam)")
+                            Text("\(game.away.team) @ \(game.home.team)")
                                 .font(.headline)
-                            Text(game.startDate)
+                            Text(game.startDate.shortStyle)
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
