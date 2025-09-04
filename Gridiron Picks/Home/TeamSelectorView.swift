@@ -17,11 +17,23 @@ struct TeamSelectorView: View {
         case away, home, none
     }
     
+    func determineTextColor(isHomeText: Bool, for teamSelection: TeamSelection) -> Color {
+        if (selectedTeam == .away && !isHomeText) || (selectedTeam == .home && isHomeText) {
+            return .green
+        } else if (selectedTeam == .away && isHomeText) || (selectedTeam == .home && !isHomeText) {
+            return .red
+        } else {
+            return .white
+        }
+    }
+    
     var body: some View {
         HStack {
             // Away Team
             Text(awayTeam)
-                .foregroundColor(selectedTeam == .away ? .green : (selectedTeam == .home ? .red : .primary))
+                .foregroundColor(
+                    determineTextColor(isHomeText: false, for: selectedTeam)
+                )
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 8)
@@ -39,7 +51,9 @@ struct TeamSelectorView: View {
                         
             // Home Team
             Text(homeTeam)
-                .foregroundColor(selectedTeam == .home ? .green : (selectedTeam == .away ? .red : .primary))
+                .foregroundColor(
+                    determineTextColor(isHomeText: true, for: selectedTeam)
+                )
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 8)

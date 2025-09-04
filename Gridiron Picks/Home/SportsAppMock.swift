@@ -14,13 +14,24 @@ struct SportsAppMock: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.systemMint)
-                    .ignoresSafeArea()
+                // Apple Sports-style gradient background
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(red: 0.1, green: 0.2, blue: 0.8),  // Bright blue
+                        Color(red: 0.05, green: 0.1, blue: 0.4), // Darker blue
+                        Color(red: 0.02, green: 0.05, blue: 0.2)  // Very dark blue
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
                 
                 VStack(spacing: 16) {
                     Spacer(minLength: 0)
                     
+                    // Rounded container for tabs and content
                     VStack(spacing: 0) {
+                        // Custom header tabs
                         HStack(spacing: 0) {
                             ForEach(tabs, id: \.self) { tab in
                                 Button(action: {
@@ -29,7 +40,7 @@ struct SportsAppMock: View {
                                     VStack(spacing: 8) {
                                         Text(tab)
                                             .font(.system(size: 16, weight: .medium))
-                                            .foregroundColor(selectedTab == tab ? .primary : .secondary)
+                                            .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
                                     }
                                 }
                                 .frame(maxWidth: .infinity)
@@ -37,32 +48,36 @@ struct SportsAppMock: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 16)
-                        .background(Color.white.opacity(0.4))
+                        .background(Color.black.opacity(0.3))
                         
                         Divider()
+                            .background(Color.white.opacity(0.2))
                         
+                        // Games list
                         ScrollView(showsIndicators: false) {
                             LazyVStack(spacing: 1) {
                                 ForEach(gamesForSelectedTab(), id: \.id) { game in
-                                        TeamSelectorView(homeTeam: game.homeTeam.name, awayTeam: game.awayTeam.name)
-                                            .padding()
-                                        Text(game.time)
-                                            .font(.subheadline)
-                                            .foregroundColor(.secondary)
+                                    TeamSelectorView(homeTeam: game.homeTeam.name, awayTeam: game.awayTeam.name)
+                                        .padding()
+                                    Text(game.time)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
                                 }
                             }
-                            .background(Color(.systemGroupedBackground).opacity(0.4))
                         }
+                        .background(Color.black.opacity(0.2))
                     }
-                    .background(Color(.systemBackground).opacity(0.4))
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .background(Color.black.opacity(0.3))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.horizontal, 16)
-                    .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
                 }
             }
-            .navigationTitle("Sports")
+            .navigationTitle("Gridiron Picks")
             .navigationBarTitleDisplayMode(.large)
-            .toolbarBackground(Color(red: 0.05, green: 0.05, blue: 0.15), for: .navigationBar)
+            .preferredColorScheme(.dark)
+            .toolbarColorScheme(.light, for: .navigationBar)
+            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         }
     }
     
@@ -156,7 +171,7 @@ struct GameRowView: View {
             }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 16)
+//        .padding(.vertical, 16)
         .background(Color(.systemBackground))
     }
 }
