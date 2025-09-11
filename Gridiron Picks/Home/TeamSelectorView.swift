@@ -64,7 +64,7 @@ struct TeamSelectorView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .background(Color.clear)
+//        .background(Color.clear)
     }
 }
 

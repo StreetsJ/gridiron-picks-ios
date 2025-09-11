@@ -53,7 +53,7 @@ struct Game: Decodable, Identifiable {
             team: try container.decode(String.self, forKey: .homeTeam),
             conference: try container.decode(String.self, forKey: .homeConference),
             points: try? container.decode(Int.self, forKey: .homePoints),
-            lineScores: try? container.decode([Int].self, forKey: .homeLineScores)
+            lineScores: try? container.decode([String].self, forKey: .homeLineScores)
         )
         
         // Away team
@@ -62,7 +62,7 @@ struct Game: Decodable, Identifiable {
             team: try container.decode(String.self, forKey: .awayTeam),
             conference: try container.decode(String.self, forKey: .awayConference),
             points: try? container.decode(Int.self, forKey: .awayPoints),
-            lineScores: try? container.decode([Int].self, forKey: .awayLineScores)
+            lineScores: try? container.decode([String].self, forKey: .awayLineScores)
         )
     }
     
@@ -79,36 +79,36 @@ struct Game: Decodable, Identifiable {
             id: 0,
             startDate: Date(),
             completed: false,
-            home: TeamInfo(id: 0, team: "Texas A&M", conference: "SEC", points: nil, lineScores: nil),
-            away: TeamInfo(id: 1, team: "UTSA", conference: "AAC", points: nil, lineScores: nil),
+            home: TeamInfo(id: 0, team: "Texas A&M", conference: "SEC", points: nil, lineScores: ["-100"]),
+            away: TeamInfo(id: 1, team: "UTSA", conference: "AAC", points: nil, lineScores: ["+200"]),
         ),
         Game(
             id: 1,
             startDate: Date().addingTimeInterval(3600),
             completed: false,
-            home: TeamInfo(id: 2, team: "Ohio State", conference: "Big Ten", points: nil, lineScores: nil),
-            away: TeamInfo(id: 3, team: "Texas", conference: "SEC", points: nil, lineScores: nil),
+            home: TeamInfo(id: 2, team: "Ohio State", conference: "Big Ten", points: nil, lineScores: ["-105"]),
+            away: TeamInfo(id: 3, team: "Texas", conference: "SEC", points: nil, lineScores: ["+125"]),
         ),
         Game(
             id: 2,
             startDate: Date().addingTimeInterval(3600 * 2),
             completed: false,
-            home: TeamInfo(id: 4, team: "UNC", conference: "ACC", points: nil, lineScores: nil),
-            away: TeamInfo(id: 5, team: "TCU", conference: "Big 12", points: nil, lineScores: nil),
+            home: TeamInfo(id: 4, team: "UNC", conference: "ACC", points: nil, lineScores: ["+200"]),
+            away: TeamInfo(id: 5, team: "TCU", conference: "Big 12", points: nil, lineScores: ["-95"]),
         ),
         Game(
             id: 3,
             startDate: Date().addingTimeInterval(3600 * 3),
             completed: false,
-            home: TeamInfo(id: 4, team: "Virginia Tech", conference: "ACC", points: nil, lineScores: nil),
-            away: TeamInfo(id: 5, team: "South Carolina", conference: "SEC", points: nil, lineScores: nil),
+            home: TeamInfo(id: 4, team: "Virginia Tech", conference: "ACC", points: nil, lineScores: ["+300"]),
+            away: TeamInfo(id: 5, team: "South Carolina", conference: "SEC", points: nil, lineScores: ["-50"]),
         ),
         Game(
             id: 4,
             startDate: Date().addingTimeInterval(3600 * 4),
             completed: false,
-            home: TeamInfo(id: 4, team: "Notre Dame", conference: "Independens", points: nil, lineScores: nil),
-            away: TeamInfo(id: 5, team: "Miami", conference: "ACC", points: nil, lineScores: nil),
+            home: TeamInfo(id: 4, team: "Notre Dame", conference: "Independens", points: nil, lineScores: ["-100"]),
+            away: TeamInfo(id: 5, team: "Miami", conference: "ACC", points: nil, lineScores: ["+130"]),
         ),
     ]
 }
@@ -124,5 +124,5 @@ struct TeamInfo: Decodable, Identifiable {
     let team: String
     let conference: String
     let points: Int?
-    let lineScores: [Int]?
+    let lineScores: [String]?
 }

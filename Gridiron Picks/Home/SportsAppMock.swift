@@ -10,74 +10,53 @@ import SwiftUI
 struct SportsAppMock: View {
     @State private var selectedTab = "Week 1"
     let tabs = ["Week 0", "Week 1", "Week 2"]
+    let games = Game.mockGames
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                // Apple Sports-style gradient background
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color(red: 0.1, green: 0.2, blue: 0.8),  // Bright blue
-                        Color(red: 0.05, green: 0.1, blue: 0.4), // Darker blue
-                        Color(red: 0.02, green: 0.05, blue: 0.2)  // Very dark blue
-                    ]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+        ZStack{
+            VStack(spacing: 16) {
+                Spacer(minLength: 0)
                 
-                VStack(spacing: 16) {
-                    Spacer(minLength: 0)
-                    
-                    // Rounded container for tabs and content
-                    VStack(spacing: 0) {
-                        // Custom header tabs
-                        HStack(spacing: 0) {
-                            ForEach(tabs, id: \.self) { tab in
-                                Button(action: {
-                                    selectedTab = tab
-                                }) {
-                                    VStack(spacing: 8) {
-                                        Text(tab)
-                                            .font(.system(size: 16, weight: .medium))
-                                            .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
-                                    }
-                                }
-                                .frame(maxWidth: .infinity)
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
-                        .background(Color.black.opacity(0.3))
-                        
-                        Divider()
-                            .background(Color.white.opacity(0.2))
-                        
-                        // Games list
-                        ScrollView(showsIndicators: false) {
-                            LazyVStack(spacing: 1) {
-                                ForEach(gamesForSelectedTab(), id: \.id) { game in
-                                    TeamSelectorView(homeTeam: game.homeTeam.name, awayTeam: game.awayTeam.name)
-                                        .padding()
-                                    Text(game.time)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                // Rounded container for tabs and content
+                VStack(spacing: 0) {
+                    // Custom header tabs
+                    HStack(spacing: 0) {
+                        ForEach(tabs, id: \.self) { tab in
+                            Button(action: {
+                                selectedTab = tab
+                            }) {
+                                VStack(spacing: 8) {
+                                    Text(tab)
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
                                 }
                             }
+                            .frame(maxWidth: .infinity)
                         }
-                        .background(Color.black.opacity(0.2))
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 16)
                     .background(Color.black.opacity(0.3))
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .padding(.horizontal, 16)
-                    .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
+                    
+                    Divider()
+                        .background(Color.white.opacity(0.2))
+                    
+                    // Games list
+                    ScrollView(showsIndicators: false) {
+                        LazyVStack(spacing: 1) {
+                            ForEach(gamesForSelectedTab(), id: \.id) { game in
+                                TeamSelectorView(homeTeam: game.homeTeam.name, awayTeam: game.awayTeam.name)
+                                    .padding()
+                                Text(game.time)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .background(Color.black.opacity(0.2))
                 }
+                .listContainerBackground()
             }
-            .navigationTitle("Gridiron Picks")
-            .navigationBarTitleDisplayMode(.large)
-            .preferredColorScheme(.dark)
-            .toolbarColorScheme(.light, for: .navigationBar)
-            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         }
     }
     
