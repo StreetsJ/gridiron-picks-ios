@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ChallengesView: View {
-    @StateObject private var viewModel = ChallengeViewModel()
+    @StateObject private var viewModel = ChallengesViewModel()
     
     var body: some View {
         if viewModel.isLoading {

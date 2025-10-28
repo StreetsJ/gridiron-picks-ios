@@ -11,9 +11,12 @@ import SwiftUI
 struct Gridiron_PicksApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    @StateObject private var currentUserViewModel = CurrentUserViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(currentUserViewModel)
         }
     }
 }

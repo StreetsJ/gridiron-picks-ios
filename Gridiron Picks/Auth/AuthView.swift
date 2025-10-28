@@ -35,6 +35,7 @@ struct AuthView: View {
                 isLogin.toggle()
             }
         }
+        .preferredColorScheme(.light)
         .padding()
         .navigationTitle(isLogin ? "Sign In" : "Sign Up")
     }

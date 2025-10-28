@@ -6,33 +6,8 @@
 //
 import SwiftUI
 
-struct ChallengeWeekPoll: View {
-    let mockGames = Game.mockGames
-    
-    @State private var selectedGames: [Game]?
-    
-    var body: some View {
-        NavigationView {
-            ScrollView(showsIndicators: false) {
-                LazyVStack(spacing: 1) {
-                    ForEach(mockGames, id: \.id) { game in
-                        NavigationLink(destination: GameDetailsView(game: game)
-                            .appGradientBackground()
-                        ) {
-                            GamePollRow(game: game)
-                        }
-                    }
-                }
-                .listContainerBackground()
-            }
-            .navigationTitle(Text("Week X Poll"))
-            .preferredColorScheme(.dark)
-        }
-    }
-}
-
 struct GamePollRow: View {
-    let game: Game
+    let game: FBGameModel
     
     @State private var isSelected: Bool = false
     @State private var checkmarkProgress: CGFloat = 0
@@ -40,21 +15,23 @@ struct GamePollRow: View {
 
     var body: some View {
         ZStack{
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(game.away.team)
+            HStack(alignment: .top) {
+                TeamTitleView(rank: game.awayRank, name: game.awayTeam)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack {
                     Text("@")
-                    Text(game.home.team)
-                    Spacer()
-                }
-                Text(game.startDate.shortStyle)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Spacer()
-                
-                HStack {
-                    Spacer()
+                        .foregroundColor(.secondary)
                     
+                    Text(String(game.spread))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Text(game.startDate.shortStyle)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
+
                     Button {
                         isSelected.toggle()
                         toggleAnimation()
@@ -62,12 +39,12 @@ struct GamePollRow: View {
                         Text("Vote")
                             .foregroundColor(isSelected ? .green : .blue)
                     }
-                    
-                    Spacer()
                 }
+                TeamTitleView(rank: game.homeRank, name: game.homeTeam)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
             if (showCheckmark) {
-                CheckmarkView(progress: checkmarkProgress, x: 300, y: 30)
+                CheckmarkView(progress: checkmarkProgress, x: 300, y: 60)
             }
         }
         .padding()
@@ -84,6 +61,23 @@ struct GamePollRow: View {
                 checkmarkProgress = showCheckmark ? 1 : 0
             }
         }
+    }
+}
+
+struct TeamTitleView: View {
+    let rank: Int?
+    let name: String?
+    
+    private var rankK: String {
+        if let rank = rank {
+            return String(rank)
+        } else {
+            return ""
+        }
+    }
+    
+    var body: some View {
+        Text("\(rankK) \(name ?? "")")
     }
 }
 
@@ -128,7 +122,7 @@ struct CheckmarkView: View {
                 
                 // Create checkmark path (coordinates match checkmarkBounds)
                 let startX = Int(x) - 140
-                let startY = Int(y) + 5
+                let startY = Int(y) - 7
                 
                 // Create checkmark path
                 checkPath.move(to: CGPoint(x: startX, y: startY))
@@ -159,8 +153,9 @@ struct CheckmarkView: View {
 
 
 #Preview {
+    let pos = 200.0
     ZStack {
         Color.blue
-        ChallengeWeekPoll()
+        CheckmarkView(progress: 1.0, x: pos, y: pos)
     }
 }

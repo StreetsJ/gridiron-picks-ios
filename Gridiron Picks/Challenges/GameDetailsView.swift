@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct GameDetailsView: View {
-    let game: Game
+    let game: FBGameModel
     
     var body: some View {
         HStack {
@@ -15,11 +15,10 @@ struct GameDetailsView: View {
             
             // Away
             VStack {
-                Text(game.away.team)
-                Text(game.away.conference)
+                TeamTitleView(rank: game.awayRank, name: game.awayTeam)
+                Text("Conference")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Text((game.away.lineScores?.first!)!)
             }
             
             Spacer()
@@ -28,6 +27,9 @@ struct GameDetailsView: View {
             VStack {
                 Text("@")
                     .font(.title)
+                    .foregroundStyle(.secondary)
+                Text(String(game.spread))
+                    .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(game.startDate.shortStyle)
                     .font(.caption)
@@ -38,11 +40,10 @@ struct GameDetailsView: View {
             
             // Home
             VStack {
-                Text(game.home.team)
-                Text(game.home.conference)
+                TeamTitleView(rank: game.homeRank, name: game.homeTeam)
+                Text("Conference")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Text((game.home.lineScores?.first!)!)
             }
             
             Spacer()
@@ -51,6 +52,6 @@ struct GameDetailsView: View {
 }
 
 #Preview {
-    GameDetailsView(game: Game.mockGames[0])
-        .appGradientBackground()
+//    GameDetailsView(game: Game.mockGames[0])
+//        .appGradientBackground()
 }

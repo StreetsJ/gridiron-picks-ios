@@ -29,7 +29,7 @@ struct AppGradientBackground: ViewModifier {
 
 struct SecondaryGradientBackground: ViewModifier {
     func body(content: Content) -> some View {
-        ZStack {
+        ZStack(alignment: .top) {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 0.1, green: 0.8, blue: 0.5),  // Bright blue
