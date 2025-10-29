@@ -23,7 +23,12 @@ struct ContentView: View {
                     NavigationView {
                         VStack {
                             HStack {
-                                Text(tabs[selectedTab])
+                               let title = if tabs[selectedTab] == "Challenges" {
+                                    "Week \(week)"
+                                } else {
+                                    "\(tabs[selectedTab])"
+                                }
+                                Text(title)
                                     .font(.largeTitle.bold())
 
                                 Spacer()

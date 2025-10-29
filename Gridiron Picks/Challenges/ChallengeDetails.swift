@@ -118,6 +118,7 @@ struct ChallengeDetails: View {
                                             .font(.system(size: 16, weight: .medium))
                                             .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
                                     }
+                                    .frame(maxWidth: .infinity)
                                 }
                             }
                         }
