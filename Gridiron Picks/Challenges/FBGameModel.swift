@@ -23,6 +23,7 @@ struct FBGameModel: Decodable, Identifiable {
     let startDate: Date
     let week: Int
     var winningTeam: String?
+    var formattedSpread: String?
     
     static let mockGames: [FBGameModel] = [
         FBGameModel(

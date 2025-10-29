@@ -8,10 +8,32 @@
 import SwiftUI
 
 struct TopGamesView: View {
+    @StateObject var viewModel = TopGamesViewModel()
 
     var body: some View {
-        MyPicksView()
-        .padding(.horizontal)
+        if let _ = viewModel.games {
+            VStack(spacing: 0) {
+                Text("Top 25 Games - Week \(week)")
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .background(Color.black.opacity(0.3))
+                
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 1) {
+                        ForEach(viewModel.games!) { game in
+                            GameRowView(game: game)
+                            Divider()
+                        }
+                    }
+                }
+                .background(Color.black.opacity(0.2))
+            }
+            .background(Color.black.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
+            .padding(.horizontal)
+        }
     }
 }
 

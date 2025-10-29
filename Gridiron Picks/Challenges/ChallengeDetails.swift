@@ -119,7 +119,6 @@ struct ChallengeDetails: View {
                                             .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
                                     }
                                 }
-                                .frame(maxWidth: .infinity)
                             }
                         }
                         .padding(.horizontal, 20)

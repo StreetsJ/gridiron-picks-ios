@@ -9,12 +9,14 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import Foundation
+
+let week: Int = 9
 
 class TopGamesViewModel: ObservableObject {
-    let week: Int = 9
     let year: Int = 2025
     
-    @Published var games: [FBGameModel] = []
+    @Published var games: [FBGameModel]? = nil
     
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -33,7 +35,7 @@ class TopGamesViewModel: ObservableObject {
         do {
             let db = Firestore.firestore()
             let querySnapshot = try await db.collection("games")
-                .whereField("week", isEqualTo: self.week)
+                .whereField("week", isEqualTo: week)
                 .whereField("seasonYear", isEqualTo: self.year)
                 .getDocuments()
             
@@ -52,6 +54,12 @@ class TopGamesViewModel: ObservableObject {
             games = decodedGames.sorted(by: { prev, next in
                 prev.startDate < next.startDate
             })
+            
+            games?.forEach { game in
+                print("\(game.awayTeam)")
+                print("\(game.homeTeam)")
+            }
+            
             isLoading = false
         } catch {
             print("Error getting games: \(error.localizedDescription)")

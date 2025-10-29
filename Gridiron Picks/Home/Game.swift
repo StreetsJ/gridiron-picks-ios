@@ -117,6 +117,20 @@ extension Date {
     var shortStyle: String {
         self.formatted(date: .abbreviated, time: .shortened)
     }
+    
+    var shortestStyle: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM d"
+        
+        return dateFormatter.string(from: self)
+    }
+    
+    var localizedTime: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        
+        return dateFormatter.string(from: self)
+    }
 }
 
 struct TeamInfo: Decodable, Identifiable {
