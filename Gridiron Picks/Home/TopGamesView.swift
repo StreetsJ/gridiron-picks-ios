@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct TopGamesView: View {
-    @StateObject var viewModel = TopGamesViewModel()
+    @EnvironmentObject var appSettings: AppSettingsManager
+    @StateObject var viewModel: TopGamesViewModel
+    
+    init(appSettings: AppSettingsManager) {
+        _viewModel = StateObject(wrappedValue: TopGamesViewModel(appSettings: appSettings))
+    }
 
     var body: some View {
         if let _ = viewModel.games {
             VStack(spacing: 0) {
-                Text("Top 25 Games - Week \(week)")
+                Text("Top 25 Games - Week \(appSettings.currentCFBWeek)")
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 16)
@@ -38,5 +43,5 @@ struct TopGamesView: View {
 }
 
 #Preview {
-    TopGamesView()
+//    TopGamesView()
 }

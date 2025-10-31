@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var currentUserViewModel = CurrentUserViewModel()
+    @EnvironmentObject var currentUserViewModel: CurrentUserViewModel
+    @EnvironmentObject var appSettingsManager: AppSettingsManager
     @StateObject var authViewModel = AuthViewModel()
     
     @State private var selectedTab = 0
@@ -24,7 +25,7 @@ struct ContentView: View {
                         VStack {
                             HStack {
                                let title = if tabs[selectedTab] == "Challenges" {
-                                    "Week \(week)"
+                                   "Week \(appSettingsManager.currentCFBWeek)"
                                 } else {
                                     "\(tabs[selectedTab])"
                                 }
@@ -52,7 +53,7 @@ struct ContentView: View {
 
                             switch selectedTab {
                             case 0:
-                                TopGamesView()
+                                TopGamesView(appSettings: appSettingsManager)
                             case 1:
                                 ChallengesView()
                                     .sheet(isPresented: $showAddChallenge) {
@@ -134,7 +135,6 @@ struct ContentView: View {
                     .appGradientBackground()
             }
         }
-        .environmentObject(currentUserViewModel)
         .environmentObject(authViewModel)
     }
 }

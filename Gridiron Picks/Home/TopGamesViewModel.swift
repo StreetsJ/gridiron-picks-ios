@@ -11,17 +11,16 @@ import FirebaseFirestore
 import FirebaseAuth
 import Foundation
 
-let week: Int = 9
-
 class TopGamesViewModel: ObservableObject {
     let year: Int = 2025
+    var appSettings: AppSettingsManager
     
     @Published var games: [FBGameModel]? = nil
-    
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
-    init() {
+    init(appSettings: AppSettingsManager) {
+        self.appSettings = appSettings
         Task {
             await loadData()
         }
@@ -35,7 +34,7 @@ class TopGamesViewModel: ObservableObject {
         do {
             let db = Firestore.firestore()
             let querySnapshot = try await db.collection("games")
-                .whereField("week", isEqualTo: week)
+                .whereField("week", isEqualTo: self.appSettings.currentCFBWeek)
                 .whereField("seasonYear", isEqualTo: self.year)
                 .getDocuments()
             
@@ -54,6 +53,8 @@ class TopGamesViewModel: ObservableObject {
             games = decodedGames.sorted(by: { prev, next in
                 prev.startDate < next.startDate
             })
+            
+            print("top games: \(!games?.isEmpty ?? false)")
             
             games?.forEach { game in
                 print("\(game.awayTeam)")

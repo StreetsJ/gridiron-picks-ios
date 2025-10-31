@@ -12,11 +12,13 @@ struct Gridiron_PicksApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var currentUserViewModel = CurrentUserViewModel()
+    @StateObject private var appSettingsManager = AppSettingsManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(currentUserViewModel)
+                .environmentObject(appSettingsManager)
         }
     }
 }
