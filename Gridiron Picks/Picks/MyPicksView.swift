@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct MyPicksView: View {
-    @StateObject private var viewModel = TopGamesViewModel()
+    let games: [FBGameModel] = FBGameModel.mockGames
     
     var body: some View {
         VStack(spacing: 0) {
             // Games list
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 1) {
-                    ForEach(viewModel.games, id: \.id) { game in
+                    ForEach(self.games, id: \.id) { game in
                         TeamSelectorView(homeTeam: game.homeTeam, awayTeam: game.awayTeam)
                             .padding()
                         Text(game.startDate.shortStyle)
@@ -33,5 +33,5 @@ struct MyPicksView: View {
 }
 
 #Preview {
-//    MyPicksView()
+    MyPicksView()
 }

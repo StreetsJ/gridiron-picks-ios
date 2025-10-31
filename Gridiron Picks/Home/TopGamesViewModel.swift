@@ -9,17 +9,18 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import Foundation
 
 class TopGamesViewModel: ObservableObject {
-    let week: Int = 9
     let year: Int = 2025
+    var appSettings: AppSettingsManager
     
-    @Published var games: [FBGameModel] = []
-    
+    @Published var games: [FBGameModel]? = nil
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
-    init() {
+    init(appSettings: AppSettingsManager) {
+        self.appSettings = appSettings
         Task {
             await loadData()
         }
@@ -33,7 +34,7 @@ class TopGamesViewModel: ObservableObject {
         do {
             let db = Firestore.firestore()
             let querySnapshot = try await db.collection("games")
-                .whereField("week", isEqualTo: self.week)
+                .whereField("week", isEqualTo: self.appSettings.currentCFBWeek)
                 .whereField("seasonYear", isEqualTo: self.year)
                 .getDocuments()
             
@@ -52,6 +53,18 @@ class TopGamesViewModel: ObservableObject {
             games = decodedGames.sorted(by: { prev, next in
                 prev.startDate < next.startDate
             })
+            
+            print("top games is empty or nil: \(games?.isEmpty ?? true)")
+            
+            games?.forEach { game in
+                print("\(game.awayTeam)")
+                print("\(game.homeTeam)")
+            }
+            
+            if (games?.isEmpty ?? false) {
+                games = nil
+            }
+            
             isLoading = false
         } catch {
             print("Error getting games: \(error.localizedDescription)")

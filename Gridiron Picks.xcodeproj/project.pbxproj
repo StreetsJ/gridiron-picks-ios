@@ -10,6 +10,7 @@
 		B362D8C72E64E40B001556EA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B362D8C62E64E40B001556EA /* FirebaseAuth */; };
 		B362D8C92E64E40F001556EA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = B362D8C82E64E40F001556EA /* FirebaseCore */; };
 		B362DCA72E7350C1001556EA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B362DCA62E7350C1001556EA /* FirebaseFirestore */; };
+		B36658652EB2C37800909C1B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = B36658642EB2C37800909C1B /* FirebaseRemoteConfig */; };
 		B3FA94B72E64E0AD00494617 /* FirebaseAI in Frameworks */ = {isa = PBXBuildFile; productRef = B3FA94B62E64E0AD00494617 /* FirebaseAI */; };
 		B3FA94B92E64E0AD00494617 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B3FA94B82E64E0AD00494617 /* FirebaseAnalytics */; };
 		B3FA94BB2E64E0AD00494617 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = B3FA94BA2E64E0AD00494617 /* FirebaseAnalyticsCore */; };
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B36658652EB2C37800909C1B /* FirebaseRemoteConfig in Frameworks */,
 				B3FA94BD2E64E0AD00494617 /* FirebaseAnalyticsIdentitySupport in Frameworks */,
 				B362D8C72E64E40B001556EA /* FirebaseAuth in Frameworks */,
 				B3FA94B92E64E0AD00494617 /* FirebaseAnalytics in Frameworks */,
@@ -147,6 +149,7 @@
 				B362D8C62E64E40B001556EA /* FirebaseAuth */,
 				B362D8C82E64E40F001556EA /* FirebaseCore */,
 				B362DCA62E7350C1001556EA /* FirebaseFirestore */,
+				B36658642EB2C37800909C1B /* FirebaseRemoteConfig */,
 			);
 			productName = "Gridiron Picks";
 			productReference = B3FA94892E64DE6700494617 /* Gridiron Picks.app */;
@@ -623,6 +626,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B3FA94B52E64E0AD00494617 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		B36658642EB2C37800909C1B /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3FA94B52E64E0AD00494617 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 		B3FA94B62E64E0AD00494617 /* FirebaseAI */ = {
 			isa = XCSwiftPackageProductDependency;

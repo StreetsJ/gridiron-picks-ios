@@ -8,79 +8,46 @@
 import SwiftUI
 
 struct TopGamesView: View {
-    @State var selectedLeague: String = "My Picks"
-    @State var leagues: [String] = ["My Picks", "Board"]
-    @State var showPopover: Bool = false
+    @EnvironmentObject var appSettings: AppSettingsManager
+    @StateObject var viewModel: TopGamesViewModel
     
-    @Namespace private var animation
+    init(appSettings: AppSettingsManager) {
+        _viewModel = StateObject(wrappedValue: TopGamesViewModel(appSettings: appSettings))
+    }
 
     var body: some View {
-            ZStack(alignment: .topTrailing) {
-                // Popover
-                Group {
-                    if showPopover {
-                        VStack {
-                            ForEach(leagues, id: \.self) { league in
-                                Button(action: {
-                                    selectedLeague = league
-                                    withAnimation(.spring()) {
-                                        showPopover.toggle()
-                                    }
-                                }) {
-                                    Text(league)
-                                }
-                                //                            .foregroundStyle(selectedLeague == league .gray)
-                            }
-                        }
-                        .padding(.horizontal)
-                        .matchedGeometryEffect(id: "showPopover", in: animation)
-                    } else {
-                        Button(action: {
-                            withAnimation(.spring()) {
-                                showPopover.toggle()
-                            }
-                        }) {
-                            HStack {
-                                Text(selectedLeague)
-                                Image(systemName: "line.horizontal.3")
-                                    .resizable()
-                                    .frame(width: 10, height: 5)
-                            }
-                            .matchedGeometryEffect(id: "showButton", in: animation)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-                .foregroundStyle(.white)
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle.rect(cornerRadius: 10)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10) // Create a matching rounded rectangle
-                        .stroke(Color.white.opacity(0.3), lineWidth: 1) // Apply the stroke (border)
-                )
-                .zIndex(2)
+        if let _ = viewModel.games {
+            VStack(spacing: 0) {
+                Text("Top 25 Games - Week \(appSettings.currentCFBWeek)")
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .background(Color.black.opacity(0.3))
                 
-                // Content
-                VStack(alignment: .trailing) {
-                    Group {
-                        switch selectedLeague {
-                        case "My Picks":
-                            MyPicksView()
-                        case "Board":
-                            BoardView()
-                        default:
-                            MyPicksView()
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 1) {
+                        ForEach(viewModel.games!) { game in
+                            GameRowView(game: game)
+                            Divider()
                         }
                     }
                 }
-                .padding(.vertical, 40)
+                .background(Color.black.opacity(0.2))
             }
+            .background(Color.black.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
             .padding(.horizontal)
+        } else {
+            VStack {
+                Spacer()
+                Text("No top 25 games for this week")
+                Spacer()
+            }
         }
+    }
 }
 
 #Preview {
-    TopGamesView()
+//    TopGamesView()
 }
