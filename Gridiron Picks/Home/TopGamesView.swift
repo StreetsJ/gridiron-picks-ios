@@ -38,6 +38,12 @@ struct TopGamesView: View {
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 6)
             .padding(.horizontal)
+        } else {
+            VStack {
+                Spacer()
+                Text("No top 25 games for this week")
+                Spacer()
+            }
         }
     }
 }

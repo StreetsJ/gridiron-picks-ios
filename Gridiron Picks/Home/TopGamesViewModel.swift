@@ -54,11 +54,15 @@ class TopGamesViewModel: ObservableObject {
                 prev.startDate < next.startDate
             })
             
-            print("top games: \(!games?.isEmpty ?? false)")
+            print("top games is empty or nil: \(games?.isEmpty ?? true)")
             
             games?.forEach { game in
                 print("\(game.awayTeam)")
                 print("\(game.homeTeam)")
+            }
+            
+            if (games?.isEmpty ?? false) {
+                games = nil
             }
             
             isLoading = false
