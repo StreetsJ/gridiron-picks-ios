@@ -57,19 +57,19 @@ struct ChallengesView: View {
                     ForEach(viewModel.challenges, id: \.title) { challenge in
                         let player1DisplayName = viewModel.getDisplayName(for: challenge.player1Id)
                         let player2DisplayName = viewModel.getDisplayName(for: challenge.player2Id)
+                        
                         NavigationLink(destination: ChallengeDetails(
                             challenge: challenge,
                             title: challenge.title,
                             player1DisplayName: player1DisplayName,
                             player2DisplayName: player2DisplayName
-                        ).appGradientBackground()
+                        ).appGradientBackground(for: challenge.getStatus())
                         ) {
                             ChallengeRowView(
                                 challenge: challenge,
                                 player1DisplayName: player1DisplayName,
                                 player2DisplayName: player2DisplayName
                             )
-                            .padding()
                         }
                     }
                 }
@@ -80,51 +80,6 @@ struct ChallengesView: View {
 //                viewModel.refreshChallenges()
 //            }
         }
-    }
-}
-
-struct ChallengeRowView: View {
-    let challenge: ChallengeModel
-    let player1DisplayName: String
-    let player2DisplayName: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(verbatim: "Season \(challenge.seasonYear)")
-                .font(.caption)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.green.opacity(0.2))
-                .foregroundColor(.green)
-                .cornerRadius(4)
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Players")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    Text("Player 1: \(player1DisplayName)")
-                        .font(.footnote)
-                    
-                    Text("Player 2: \(player2DisplayName)")
-                        .font(.footnote)
-                }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Games")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    Text("\(challenge.gameIds.count)")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                }
-            }
-        }
-        .padding(.vertical, 4)
     }
 }
 

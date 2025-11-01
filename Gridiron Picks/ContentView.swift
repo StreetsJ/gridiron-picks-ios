@@ -63,7 +63,7 @@ struct ContentView: View {
                             case 2:
                                 ProfileView(currentUserVM: currentUserViewModel) // need to pass in viewmodel because enviornment objects are injected after view initialization
                             default:
-                                ChallengesView()
+                                TopGamesView(appSettings: appSettingsManager)
                             }
                             
                             Spacer()
@@ -140,5 +140,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+//    ContentView()
 }
