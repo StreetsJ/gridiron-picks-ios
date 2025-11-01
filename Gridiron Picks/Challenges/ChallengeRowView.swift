@@ -64,6 +64,7 @@ struct ChallengeRowView: View {
         }
     }
     
+    // TODO: try to standarize with function from view extensions
     func backgroundColor(for challengeStatus: ChallengeStatus) -> Color {
         switch challengeStatus {
         case .voting:
