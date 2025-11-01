@@ -22,7 +22,7 @@ struct AppGradientBackground: ViewModifier {
         case .voting:
             return [Color(.systemPink).opacity(0.3), Color(.systemPink).opacity(0.1)]
         case .picking:
-            return [Color(.systemPurple).opacity(0.3), Color.black]
+            return [Color(.systemPurple).opacity(0.3), Color(.systemPurple).opacity(0.1)]
         case .closed:
             return [Color(.systemMint).opacity(0.3), Color(.systemMint).opacity(0.1)]
         case .completed:
