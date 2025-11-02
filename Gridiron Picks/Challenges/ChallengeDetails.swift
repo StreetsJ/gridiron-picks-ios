@@ -14,7 +14,7 @@ struct ChallengeDetails: View {
     let title: String
     let player1DisplayName: String
     let player2DisplayName: String
-    let games: [Game] = Game.mockGames
+    let games: [FBGameModel] = FBGameModel.mockGames
     
     @State private var progress: CGFloat = 0.0
     @State private var showBottomSheet: Bool = false
@@ -25,6 +25,19 @@ struct ChallengeDetails: View {
 
     @State private var selectedLeague = "Top 25"
     let leagues = ["Top 25", "ACC", "Big 10", "Big 12", "SEC"]
+    
+    func getTitle(for challengeStatus: ChallengeStatus) -> String {
+        switch challengeStatus {
+        case .voting:
+            return "Voting"
+        case .picking:
+            return "Picking"
+        case .closed:
+            return "Closed"
+        case .completed:
+            return "Completed"
+        }
+    }
     
     
     var body: some View {
@@ -41,6 +54,7 @@ struct ChallengeDetails: View {
                         showBottomSheet = false
                     }
                 }
+            
             VStack {
                 HStack {
                     Text(player1DisplayName)
@@ -52,76 +66,15 @@ struct ChallengeDetails: View {
                 VStack(spacing: 16) {
                     Spacer(minLength: 0)
                     
-                    //                    if selectedTab == "Next Week" {
-                    //                        Group {
-                    //                            if showPopover {
-                    //                                VStack {
-                    //                                    ForEach(leagues, id: \.self) { league in
-                    //                                        Button(action: {
-                    //                                            selectedLeague = league
-                    //                                            showPopover.toggle()
-                    //                                        }) {
-                    //                                            Text(league)
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                                .padding(.horizontal)
-                    //                                .padding(.vertical, 5)
-                    //                                .foregroundStyle(.white)
-                    //                                .background(.black.opacity(0.1))
-                    //                                .clipShape(RoundedRectangle.rect(cornerRadius: 10)
-                    //                                )
-                    //                                .overlay(
-                    //                                    RoundedRectangle(cornerRadius: 10) // Create a matching rounded rectangle
-                    //                                        .stroke(Color.white.opacity(0.3), lineWidth: 1) // Apply the stroke (border)
-                    //                                )
-                    //                                .transition(.move(edge: .trailing))
-                    //                            } else {
-                    //                                Button(action: {
-                    //                                    withAnimation(.spring()) {
-                    //                                        showPopover.toggle()
-                    //                                    }
-                    //                                }) {
-                    //                                    HStack {
-                    //                                        Text(selectedLeague)
-                    //                                            .font(.caption)
-                    //                                        Image(systemName: "line.horizontal.3")
-                    //                                            .resizable()
-                    //                                            .frame(width: 10, height: 5)
-                    //                                    }
-                    //                                    .padding(.horizontal)
-                    //                                    .padding(.vertical, 5)
-                    //                                    .foregroundStyle(.white)
-                    //                                    .background(.black.opacity(0.1))
-                    //                                    .clipShape(RoundedRectangle.rect(cornerRadius: 10)
-                    //                                    )
-                    //                                    .overlay(
-                    //                                        RoundedRectangle(cornerRadius: 10) // Create a matching rounded rectangle
-                    //                                            .stroke(Color.white.opacity(0.3), lineWidth: 1) // Apply the stroke (border)
-                    //                                    )
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                        .frame(alignment: .topTrailing)
-                    //                    }
-                    
                     // Rounded container for tabs and content
                     VStack(spacing: 0) {
                         // Custom header tabs
-                        HStack(spacing: 0) {
-                            ForEach(tabs, id: \.self) { tab in
-                                Button(action: {
-                                    selectedTab = tab
-                                }) {
-                                    VStack(spacing: 8) {
-                                        Text(tab)
-                                            .font(.system(size: 16, weight: .medium))
-                                            .foregroundColor(selectedTab == tab ? .white : Color.white.opacity(0.7))
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                }
-                            }
+                        HStack(spacing: 8) {
+                            Text("\(self.getTitle(for: self.challenge.getStatus())) Stage")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
                         }
+                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 16)
                         .background(Color.black.opacity(0.3))
@@ -132,18 +85,8 @@ struct ChallengeDetails: View {
                         // Games list
                         ScrollView(showsIndicators: false) {
                             LazyVStack(spacing: 1) {
-                                switch selectedTab {
-                                case "Last Week":
-                                    PastWeek()
-                                case "This Week":
-                                    ForEach(games, id: \.id) { game in
-                                        TeamSelectorView(homeTeam: game.home.team, awayTeam: game.away.team)
-                                            .padding()
-                                        Text(game.startDate.shortStyle)
-                                            .font(.subheadline)
-                                            .foregroundColor(.secondary)
-                                    }
-                                case "Next Week":
+                                switch self.challenge.getStatus() {
+                                case .voting:
                                     ForEach(viewModel.games, id: \.id) { game in
                                         GamePollRow(game: game)
                                             .onTapGesture(perform: {
@@ -156,12 +99,19 @@ struct ChallengeDetails: View {
                                                     .presentationDragIndicator(.visible)
                                             }
                                     }
-                                default:
-                                    Text("Default")
+                                case .picking:
+                                    ForEach(games, id: \.id) { game in
+                                        TeamSelectorView(homeTeam: game.homeTeam, awayTeam: game.awayTeam, game: game)
+                                            .padding()
+                                    }
+                                case .closed:
+                                    ForEach(games, id: \.id) { game in
+                                        GameRowView(game: game)
+                                    }
+                                case .completed:
+                                    PastWeek()
                                 }
-                                
                             }
-                            .animation(.easeInOut, value: selectedTab)
                         }
                         .background(Color.black.opacity(0.2))
                     }
@@ -171,93 +121,6 @@ struct ChallengeDetails: View {
                 }
             }
         }
-        //        .toolbar {
-        //            ToolbarItem(placement: .topBarTrailing) {
-        //                if showPopover {
-        //                    VStack {
-        //                        ForEach(leagues, id: \.self) { league in
-        //                            Button(action: {
-        //                                selectedLeague = league
-        //                                withAnimation(.spring()) {
-        //                                    showPopover.toggle()
-        //                                }
-        //                            }) {
-        //                                Text(league)
-        //                            }
-        //                            //                            .foregroundStyle(selectedLeague == league .gray)
-        //                        }
-        //                    }
-        //                    .transition(.move(edge: .trailing))
-        //                } else {
-        //                    Button(action: {
-        //                        withAnimation(.spring()) {
-        //                            showPopover.toggle()
-        //                        }
-        //                    }) {
-        //                        HStack {
-        //                            Text(selectedLeague)
-        //                                .font(.caption)
-        //                            Spacer()
-        //                            Image(systemName: "line.horizontal.3")
-        //                                .resizable()
-        //                                .frame(width: 10, height: 5)
-        //                        }
-        //                        .padding(.horizontal)
-        //                        .padding(.vertical, 5)
-        //                        .foregroundStyle(.white)
-        //                        .background(.black.opacity(0.1))
-        //                        .clipShape(RoundedRectangle.rect(cornerRadius: 10)
-        //                        )
-        //                        .overlay(
-        //                            RoundedRectangle(cornerRadius: 10) // Create a matching rounded rectangle
-        //                                .stroke(Color.white.opacity(0.3), lineWidth: 1) // Apply the stroke (border)
-        //                        )
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        .overlay(alignment: .topTrailing) {
-        //            if showPopover {
-        //                VStack {
-        //                    ForEach(leagues, id: \.self) { league in
-        //                        Button(action: {
-        //                            selectedLeague = league
-        //                            withAnimation(.spring()) {
-        //                                showPopover.toggle()
-        //                            }
-        //                        }) {
-        //                            Text(league)
-        //                        }
-        //                        //                            .foregroundStyle(selectedLeague == league .gray)
-        //                    }
-        //                }
-        //                .transition(.move(edge: .trailing))
-        //            } else {
-        //                Button(action: {
-        //                    withAnimation(.spring()) {
-        //                        showPopover.toggle()
-        //                    }
-        //                }) {
-        //                    HStack {
-        //                        Text(selectedLeague)
-        //                            .font(.caption)
-        //                        Image(systemName: "line.horizontal.3")
-        //                            .resizable()
-        //                            .frame(width: 10, height: 5)
-        //                    }
-        //                    .padding(.horizontal)
-        //                    .padding(.vertical, 5)
-        //                    .foregroundStyle(.white)
-        //                    .background(.black.opacity(0.1))
-        //                    .clipShape(RoundedRectangle.rect(cornerRadius: 10)
-        //                    )
-        //                    .overlay(
-        //                        RoundedRectangle(cornerRadius: 10) // Create a matching rounded rectangle
-        //                            .stroke(Color.white.opacity(0.3), lineWidth: 1) // Apply the stroke (border)
-        //                    )
-        //                }
-        //            }
-        //        }
         .preferredColorScheme(.dark)
         .padding()
         

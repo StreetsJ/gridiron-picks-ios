@@ -22,7 +22,6 @@ struct GameRowView: View {
                     Spacer()
                 }
                 VStack {
-                    
                     Text(game.startDate.shortestStyle)
                         .font(.caption)
                         .foregroundColor(.secondary)

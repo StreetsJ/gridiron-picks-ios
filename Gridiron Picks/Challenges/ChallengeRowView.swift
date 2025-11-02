@@ -14,7 +14,7 @@ struct ChallengeRowView: View {
     
     var body: some View {
         ZStack{
-            LinearGradient(gradient: Gradient(colors: [self.backgroundColor(for: challenge.getStatus()), Color.black]), startPoint: .topTrailing, endPoint: .bottomLeading)
+            LinearGradient(gradient: Gradient(colors: [Color.getColor(for: self.challenge.getStatus()), Color.black]), startPoint: .topTrailing, endPoint: .bottomLeading)
             VStack(alignment: .leading, spacing: 8) {
                 Text(verbatim: "Season \(challenge.seasonYear)")
                     .font(.caption)
@@ -61,20 +61,6 @@ struct ChallengeRowView: View {
                 }
             }
             .padding()
-        }
-    }
-    
-    // TODO: try to standarize with function from view extensions
-    func backgroundColor(for challengeStatus: ChallengeStatus) -> Color {
-        switch challengeStatus {
-        case .voting:
-            return Color(.systemPink).opacity(0.3)
-        case .picking:
-            return Color(.systemPurple).opacity(0.3)
-        case .closed:
-            return Color(.systemMint).opacity(0.3)
-        case .completed:
-            return Color.green.opacity(0.4)
         }
     }
 }

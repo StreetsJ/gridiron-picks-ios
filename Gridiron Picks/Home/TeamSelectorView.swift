@@ -13,6 +13,8 @@ struct TeamSelectorView: View {
     var homeTeam: String
     var awayTeam: String
     
+    let game: FBGameModel
+    
     enum TeamSelection {
         case away, home, none
     }
@@ -44,10 +46,27 @@ struct TeamSelectorView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                         
-            // @ Symbol
-            Text("@")
-                .foregroundColor(.secondary)
-                .frame(width: 20, alignment: .center)
+            VStack {
+                Text(game.startDate.shortestStyle)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Text(game.startDate.localizedTime)
+                
+                Spacer()
+                
+                let formattedSpread = if (game.spread > 0) {
+                    "\(game.awayTeam) \(game.spread)"
+                } else {
+                    "\(game.homeTeam) \(game.spread)"
+                }
+                
+                Text(formattedSpread)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
                         
             // Home Team
             Text(homeTeam)
@@ -64,10 +83,9 @@ struct TeamSelectorView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-//        .background(Color.clear)
     }
 }
 
 #Preview {
-    TeamSelectorView(homeTeam: "Ohio State", awayTeam: "Texas")
+//    TeamSelectorView(homeTeam: "Ohio State", awayTeam: "Texas")
 }

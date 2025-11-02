@@ -16,7 +16,7 @@ struct MyPicksView: View {
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 1) {
                     ForEach(self.games, id: \.id) { game in
-                        TeamSelectorView(homeTeam: game.homeTeam, awayTeam: game.awayTeam)
+                        TeamSelectorView(homeTeam: game.homeTeam, awayTeam: game.awayTeam, game: game)
                             .padding()
                         Text(game.startDate.shortStyle)
                             .font(.subheadline)

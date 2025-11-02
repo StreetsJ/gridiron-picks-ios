@@ -19,14 +19,23 @@ struct GamePollRow: View {
                 TeamTitleView(rank: game.awayRank, name: game.awayTeam)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 VStack {
-                    Text("@")
-                        .foregroundColor(.secondary)
-                    
-                    Text(String(game.spread))
+                    Text(game.startDate.shortestStyle)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     
-                    Text(game.startDate.shortStyle)
+                    Spacer()
+                    
+                    Text(game.startDate.localizedTime)
+                    
+                    Spacer()
+                    
+                    let formattedSpread = if (game.spread > 0) {
+                        "\(game.awayTeam) \(game.spread)"
+                    } else {
+                        "\(game.homeTeam) \(game.spread)"
+                    }
+                    
+                    Text(formattedSpread)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     

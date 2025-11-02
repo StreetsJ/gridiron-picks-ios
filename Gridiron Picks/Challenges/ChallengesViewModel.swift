@@ -28,7 +28,7 @@ class ChallengesViewModel: ObservableObject {
         if shouldUseMockData {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.challenges = ChallengeModel.mockChallenges
-                self.userDisplayNames = ["user1": "You", "user2": "Zach", "user3": "Ari", "user4": "Bot"]
+                self.userDisplayNames = ["user1": "You", "user2": "Zach", "user3": "Ari", "user4": "Bot", "user5": "User"]
             }
         } else {
             if let currentUserUID = Auth.auth().currentUser?.uid {

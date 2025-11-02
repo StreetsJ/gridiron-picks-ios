@@ -63,7 +63,7 @@ struct ChallengeModel: Decodable, Identifiable {
             player2Losses: 27,
             seasonYear: 2025,
             week: 3,
-            title: "Super Bowl LVIII",
+            title: "Super Bowl LVII",
             status: "picking"
         ),
         ChallengeModel(
@@ -78,8 +78,23 @@ struct ChallengeModel: Decodable, Identifiable {
             player2Losses: 18,
             seasonYear: 2025,
             week: 3,
-            title: "Super Bowl LVII",
+            title: "Super Bowl LVIII",
             status: "closed"
+      ),
+        ChallengeModel(
+            player1Id: "user1",
+            player2Id: "user5",
+            gameIds: ["4", "5", "6", "7"],
+            player1Wins: 67,
+            player1Ties: 1,
+            player1Losses: 13,
+            player2Wins: 63,
+            player2Ties: 0,
+            player2Losses: 18,
+            seasonYear: 2025,
+            week: 3,
+            title: "Super Bowl LIX",
+            status: "completed"
       ),
     ]
     
